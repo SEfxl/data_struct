@@ -8,7 +8,7 @@ typedef struct node {
     struct node *rchild;
 }BTNode;
 
-//����������
+//创建二叉树
 void CreateBTNode(BTNode *&b, char *str) {
     BTNode *St[MaxSize],*p;
     int top=-1,k,j=0;
@@ -44,6 +44,7 @@ void CreateBTNode(BTNode *&b, char *str) {
     }
 }
 
+//查找值为C的节点
 BTNode *FindNode(BTNode *b, char c) {
 
     BTNode *p;
@@ -61,6 +62,7 @@ BTNode *FindNode(BTNode *b, char c) {
     }
 }
 
+//求树的高度
 int BTNodeHeight(BTNode *b) {
     int lchild,rchild;
     if(b == NULL) {
@@ -72,7 +74,7 @@ int BTNodeHeight(BTNode *b) {
     }
 }
 
-//���������
+//输出二叉树
 void DisplayBTNode(BTNode *b) {
     if(b!=NULL) {
         printf("%c",b->data);
@@ -87,6 +89,85 @@ void DisplayBTNode(BTNode *b) {
     }
 }
 
+//前序遍历
+void PreOrder(BTNode *b) {
+    if(b!= NULL) {
+       printf("%c ",b->data);
+       PreOrder(b->lchild);
+       PreOrder(b->rchild);
+    }
+}
+
+//中序遍历
+void InOrder(BTNode *b) {
+    if(b!= NULL) {
+        InOrder(b->lchild);
+        printf("%c ",b->data);
+        InOrder(b->rchild);
+    }
+}
+
+//后序遍历
+void PostOrder(BTNode *b) {
+    if(b!= NULL) {
+        PostOrder(b->lchild);
+        PostOrder(b->rchild);
+        printf("%c ",b->data);
+    }
+}
+//层次遍历
+void GradurationOrder(BTNode *b) {
+    if(b!= NULL) {
+        printf("%c ",b->data);
+
+    }
+}
+
+//从左到右输出叶子节点
+void outputLeadsLeft(BTNode *b) {
+    if(b!= NULL){
+        if(b->lchild == NULL && b->rchild == NULL){
+            printf("%c ",b->data);
+        }
+        outputLeadsLeft(b->lchild);
+        outputLeadsLeft(b->rchild);
+    }
+}
+
+//从右到左输出叶子节点
+void outputLeadsRight(BTNode *b) {
+    if(b!= NULL) {
+        if(b->lchild == NULL && b->rchild == NULL) {
+            printf("%c ",b->data);
+        }
+        outputLeadsRight(b->rchild);
+        outputLeadsRight(b->lchild);
+    }
+}
+
+//输出有两个孩子的节点
+void outputTwoChildLeads(BTNode *b) {
+    if(b!= NULL) {
+        if(b->lchild != NULL && b->rchild != NULL) {
+            printf("%c ",b->data);
+        }
+        outputTwoChildLeads(b->rchild);
+        outputTwoChildLeads(b->lchild);
+    }
+}
+
+//输出有一个孩子的节点
+void outputOneChildLeads(BTNode *b) {
+    if(b!= NULL) {
+        if((b->lchild != NULL && b->rchild == NULL) || (b->lchild == NULL && b->rchild!= NULL)) {
+            printf("%c ",b->data);
+        }
+        outputOneChildLeads(b->rchild);
+        outputOneChildLeads(b->lchild);
+    }
+}
+
+
 int main() {
     char str[]="A(B(D(,G)),C(E,F))";
     int high=0;
@@ -97,11 +178,41 @@ int main() {
     char c = 'H';
     head = FindNode(p,c);
     if(head == NULL) {
-        printf("���нڵ㲻���ڴ�ֵ\n");
+        printf("树中节点不存在此值\n");
     }else {
-        printf("���д��ڴ˽ڵ㣬�ýڵ������е�ֵΪ��%c\n",head->data);
+        printf("树中存在此节点，该节点在树中的值为：%c\n",head->data);
     }
     high = BTNodeHeight(p);
-    printf("���ĸ߶�Ϊ��%d\n",high);
+    printf("树的高度为：%d\n",high);
+
+    printf("前序遍历结果为：");
+    PreOrder(p);
+    printf("\n");
+
+    printf("中序遍历结果为：");
+    InOrder(p);
+    printf("\n");
+
+    printf("后序遍历结果为：");
+    PostOrder(p);
+    printf("\n");
+
+    printf("从左到右输出叶子结点为：");
+    outputLeadsLeft(p);
+    printf("\n");
+
+    printf("从右到左输出叶子结点为：");
+    outputLeadsRight(p);
+    printf("\n");
+
+    printf("有两个孩子的节点为：");
+    outputTwoChildLeads(p);
+    printf("\n");
+
+    printf("有一个孩子的节点为：");
+    outputOneChildLeads(p);
+    printf("\n");
+
+
     return 0;
  }
