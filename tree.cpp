@@ -167,6 +167,51 @@ void outputOneChildLeads(BTNode *b) {
     }
 }
 
+//求二叉树中节点值为X的节点的层数
+int level(BTNode *b, char c, int h) {
+    int k;
+    if(b == NULL) {
+        return 0;
+    }else if(b->data == c) {
+        return h;
+    }else {
+        k = level(b->lchild,c,h+1);   //左孩子节点中查找
+        if(k!=0){
+            return k;
+        }else {
+            return level(b->rchild,c,h+1);  //右孩子节点中查找
+        }
+    }
+}
+
+//判断两个树是否相似
+bool like(BTNode *b1, BTNode *b2) {
+    bool like1,like2;
+    if(b1 == NULL && b2 == NULL)
+        return true;
+    else if(b1 == NULL || b2 == NULL) {
+        return false;
+    }else {
+        like1 = like(b1->lchild,b2->lchild);
+        like2 = like(b1->rchild,b2->rchild);
+        return like1&&like2;
+    }
+}
+
+//求节点x的所有祖先节点
+bool ancestor(BTNode *b, char x) {
+    if(b == NULL) {
+        return false;
+    }else if(b->lchild!=NULL && b->lchild->data == x || b->rchild!=NULL && b->rchild->data == x) {
+        printf("%c ",b->data);
+        return true;
+    }else if(ancestor(b->lchild,x) || ancestor(b->rchild,x)){
+        printf("%c ",b->data);
+        return true;
+    }else {
+        return false;
+    }
+}
 
 int main() {
     char str[]="A(B(D(,G)),C(E,F))";
@@ -213,6 +258,13 @@ int main() {
     outputOneChildLeads(p);
     printf("\n");
 
+    printf("求二叉树中节点值为X的节点的层数\n");
+    int ceng = level(p,'B',1);
+    printf("位于第 %d 层\n",ceng);
+
+    printf("求二叉树中节点值为X的祖先节点\n");
+    ancestor(p,'G');
+    printf("\n");
 
     return 0;
  }
