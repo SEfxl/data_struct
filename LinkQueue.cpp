@@ -11,43 +11,69 @@ typedef struct {
     QNode *reals;
 }LiQueue;
 
-//³õÊ¼»¯¶ÓÁĞ
+//åˆå§‹åŒ–é˜Ÿåˆ—
 void initQueue(LiQueue *&q) {
     q = (LiQueue *)malloc(sizeof(LiQueue));
     q->reals = q->fronts = NULL;
-    printf("³õÊ¼»¯¶ÓÁĞÍê±Ï£¡\n");
+    printf("åˆå§‹åŒ–é˜Ÿåˆ—å®Œæ¯•ï¼\n");
 }
 
-//Èë¶ÓÁĞ
+//å…¥é˜Ÿåˆ—
 void enQueue(LiQueue *&q, int e) {
     QNode *p;
     p =(QNode *) malloc(sizeof(QNode));
     p->data = e;
     p->next = NULL;
-    if(q->reals == NULL){ //Èç¹û¶ÓÁĞÎª¿Õ,ĞÂ½Úµã¼´ÊÇ¶ÓÊ×½ÚµãÓÖÊÇ¶ÓÎ²½Úµã
+    if(q->reals == NULL){ //å¦‚æœé˜Ÿåˆ—ä¸ºç©º,æ–°èŠ‚ç‚¹å³æ˜¯é˜Ÿé¦–èŠ‚ç‚¹åˆæ˜¯é˜Ÿå°¾èŠ‚ç‚¹
        q->reals = q->fronts = p;
-    } else {  //½«*p½ÚµãÁ´µ½¶ÓÎ²£¬²¢½«realsÖ¸ÏòËü
+    } else {  //å°†*pèŠ‚ç‚¹é“¾åˆ°é˜Ÿå°¾ï¼Œå¹¶å°†realsæŒ‡å‘å®ƒ
         q->reals->next = p;
         q->reals = p;
     }
 }
 
-//³ö¶ÓÁĞ
+//å‡ºé˜Ÿåˆ—
 void deQueue(LiQueue *&q) {
     QNode *t;
-    if(q->reals == NULL) {  //¶ÓÁĞÎª¿Õ
+    if(q->reals == NULL) {  //é˜Ÿåˆ—ä¸ºç©º
         return ;
     }
-    t = q->fronts;  //Ö¸ÏòµÚÒ»¸öÊı¾İÔªËØ
-    if(q->fronts == q->reals) { //¶ÓÁĞÖĞÖ»ÓĞÒ»¸öÔªËØ,frontsºÍreals¶¼ÖÃÎªNULL
+    t = q->fronts;  //æŒ‡å‘ç¬¬ä¸€ä¸ªæ•°æ®å…ƒç´ 
+    if(q->fronts == q->reals) { //é˜Ÿåˆ—ä¸­åªæœ‰ä¸€ä¸ªå…ƒç´ ,frontså’Œrealséƒ½ç½®ä¸ºNULL
         q->fronts = q->reals = NULL;
     }else {
         q->fronts = q->fronts->next;
     }
-    printf("³ö¶ÓÔªËØÎª£º%d\n",t->data);
+    printf("å‡ºé˜Ÿå…ƒç´ ä¸ºï¼š%d\n",t->data);
     free(t);
 }
 
+//é˜Ÿåˆ—æ˜¯å¦ä¸ºç©º
+void queueEmpty(LiQueue *q) {
+    if(q->reals == NULL) {
+        printf("é˜Ÿåˆ—ä¸ºç©º\n");
+    }else {
+        printf("é˜Ÿåˆ—ä¸ä¸ºç©º\n");
+    }
+}
+
+//é”€æ¯é˜Ÿåˆ—
+void destoryQueue(LiQueue *&q) {
+    QNode *p = q->fronts,*r; //pæŒ‡å‘å¯¹å¤´æ•°æ®èŠ‚ç‚¹
+    if(p != NULL) {
+        r = p->next;
+        while(r!=NULL) {
+            free(p);
+            p=r;
+            r=p->next;
+        }
+    }
+    free(p);
+    free(q);   //é‡Šæ”¾é“¾é˜ŸèŠ‚ç‚¹å ç”¨ç©ºé—´
+    printf("é˜Ÿåˆ—é‡Šæ”¾å®Œæ¯•!\n");
+}
+
+//é“¾é˜Ÿåˆ—
 int main()
 {
     LiQueue *q;
@@ -58,6 +84,8 @@ int main()
     deQueue(q);
     deQueue(q);
 
+    destoryQueue(q);
+    deQueue(q);
     return 0;
 }
 
