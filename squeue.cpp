@@ -8,59 +8,76 @@ typedef struct qnode {
     int fronts,reals;
 }SqQueue;
 
-// ³õÊ¼»¯¶ÓÁÐ
+// åˆå§‹åŒ–é˜Ÿåˆ—
 void initQueue(SqQueue *&q) {
     q =(SqQueue *) malloc(sizeof(SqQueue));
     q->fronts = q->reals = -1;
+    printf("åˆå§‹åŒ–é˜Ÿåˆ—å®Œæ¯•!\n");
 }
 
-// Èë¶ÓÁÐ
+// å…¥é˜Ÿåˆ—
 bool enQueue(SqQueue *&q, int e) {
-    if((q->reals + 1)%MaxSize == q->fronts) {  //¶ÓÁÐÒÑÂú
+    if((q->reals + 1)%MaxSize == q->fronts) {  //é˜Ÿåˆ—å·²æ»¡
         return false;
     }
     q->reals = (q->reals + 1) % MaxSize;
     q->data[q->reals] = e;
     return true;
 }
-// ³ö¶ÓÁÐ
+// å‡ºé˜Ÿåˆ—
 void deQueue(SqQueue *&q) {
-    if(q->fronts == q->reals ) { //¶ÓÁÐÒÑ¿Õ
+    if(q->fronts == q->reals ) { //é˜Ÿåˆ—å·²ç©º
         return ;
     }
     q->fronts = (q->fronts+1)%MaxSize;
-    printf("³ö¶ÓÁÐ£º%d\n",q->data[q->fronts]);
+    printf("å‡ºé˜Ÿåˆ—ï¼š%d\n",q->data[q->fronts]);
 }
 
-// Ïú»Ù¶ÓÁÐ
+// é”€æ¯é˜Ÿåˆ—
 void destroyQueue(SqQueue *&q) {
     free(q);
 }
 
-// ¶ÓÁÐÊÇ·ñÎª¿Õ
+// é˜Ÿåˆ—æ˜¯å¦ä¸ºç©º
 void isEmpty(SqQueue *q) {
     if(q->fronts == q->reals) {
-        printf("¶ÓÁÐÎª¿Õ\n");
+        printf("é˜Ÿåˆ—ä¸ºç©º\n");
     }else {
-        printf("¶ÓÁÐ²»Îª¿Õ\n");
+        printf("é˜Ÿåˆ—ä¸ä¸ºç©º\n");
     }
 }
+//æ±‚è§£æŠ¥æ•°é—®é¢˜
+void number(SqQueue *&q) {
+    printf("å‡ºåˆ—é¡ºåºä¸ºï¼š");
+    while(q->fronts!=q->reals) {
+        q->fronts = (q->fronts+1)%MaxSize;
+        printf("%d ",q->data[q->fronts]);
+        if(q->fronts != q->reals) {
+            q->fronts = (q->fronts+1)%MaxSize;
+            q->reals = (q->reals+1)%MaxSize;
+            q->data[q->reals] = q->data[q->fronts];
+        }
+    }
+    printf("\n");
+}
 
-// »·ÐÎ¶ÓÁÐ£¬Ô¼¶¨ÔÚ½ø¶ÓÊ±ÉÙÓÃÒ»¸öÊý¾ÝÔªËØ¿Õ¼ä
-// ¶ÓÂúÌõ¼þ£º(q->reals +1) % MaxSize == q->fronts
-// ¶Ô¿ÕÌõ¼þ£ºq->reals == q->fronts
+// çŽ¯å½¢é˜Ÿåˆ—ï¼Œçº¦å®šåœ¨è¿›é˜Ÿæ—¶å°‘ç”¨ä¸€ä¸ªæ•°æ®å…ƒç´ ç©ºé—´
+// é˜Ÿæ»¡æ¡ä»¶ï¼š(q->reals +1) % MaxSize == q->fronts
+// å¯¹ç©ºæ¡ä»¶ï¼šq->reals == q->fronts
 int main()
 {
     SqQueue *q;
     initQueue(q);
-    int num = 9;
+    int num = 8;
     for(int i=1;i<=num;i++) {
         enQueue(q,i);
     }
-    for(int i=1;i<=num;i++) {
-        deQueue(q);
-    }
-    isEmpty(q);
+    number(q);
+
+    //for(int i=1;i<=num;i++) {
+    //    deQueue(q);
+    //}
+    //isEmpty(q);
 
     return 0;
 }
