@@ -1,21 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//����������
+//二叉排序树
 typedef struct Nodes {
     int key;
     struct Nodes *lchild;
-    struct NOdes *rchild;
+    struct Nodes *rchild;
 }BSTNode;
 
 /**
- * ���������ݽڵ���뵽����������p��
- * ʹ����ߵĶ�С�ڸ��ڵ㣬�ұߵĶ����ڸ��ڵ�
+ * 将单个数据节点插入到二叉排序树p中
+ * 使得左边的都小于父节点，右边的都大于父节点
  * @param p
  * @param e
  * @return
  */
-int InsertBST(BSTNode *p, int e) {  //1&
+int InsertBST(BSTNode *&p, int e) {
 
     if(p == NULL) {
         p =(BSTNode *) malloc(sizeof(BSTNode));
@@ -33,7 +33,7 @@ int InsertBST(BSTNode *p, int e) {  //1&
 }
 
 /**
- * �������������������ε��ò��뵥���ڵ�ķ���
+ * 创建二叉排序树，依次调用插入单个节点的方法
  * @param a
  * @param n
  * @return
@@ -49,7 +49,7 @@ BSTNode * CreateBSTNode(int a[],int n) {
 }
 
 /**
- * �������
+ * 中序遍历
  * @param p
  */
 void MidOutput(BSTNode *p) {
@@ -61,7 +61,7 @@ void MidOutput(BSTNode *p) {
 }
 
 /**
- * �������������ң��ҵ���ֵ�Ľڵ�
+ * 二叉排序树查找，找到该值的节点
  * @param p
  * @param e
  * @return
@@ -79,16 +79,16 @@ BSTNode * SearchBST(BSTNode *p, int e) {
 }
 
 /**
- * ��bt�в��ң������ҳɹ��򷵻ظýڵ�ָ��,f����˫�׽ڵ�,���򷵻�NULL
- * f1�����м����������f,��ʼ����ΪNULL
- * ���÷�ʽ��SearchParent(bt,e,NULL,f);
+ * 在bt中查找，若查找成功则返回该节点指针,f返回双亲节点,否则返回NULL
+ * f1用做中间参数用于求f,初始设置为NULL
+ * 调用方式：SearchParent(bt,e,NULL,f);
  * @param bt
  * @param e
  * @param f1
  * @param f
  * @return
  */
-BSTNode *SearchParent(BSTNode *bt, int e, BSTNode *f1, BSTNode *f) {  // 1&4&
+BSTNode *SearchParent(BSTNode *&bt, int e, BSTNode *f1, BSTNode *&f) {
     if(bt == NULL) {
         f = NULL;
         return NULL;
@@ -103,7 +103,7 @@ BSTNode *SearchParent(BSTNode *bt, int e, BSTNode *f1, BSTNode *f) {  // 1&4&
 }
 
 /**
- * ��ȡ���ֵ
+ * 获取最大值
  * @param p
  * @return
  */
@@ -115,7 +115,7 @@ int getMaxNode(BSTNode *p) {
 }
 
 /**
- * ��ȡ��Сֵ
+ * 获取最小值
  * @param p
  * @return
  */
@@ -127,50 +127,50 @@ int getMinNode(BSTNode *p) {
 }
 
 /**
- * ���ڸ����������ڵ�p,�ҳ������������ڵ�,�ҳ���������С�ڵ�
+ * 对于给定二叉树节点p,找出其左子树最大节点,找出右子树最小节点
  * @param p
  */
 void getMaxAndMinNode(BSTNode *p) {
     if(p == NULL) {
-        printf("�ýڵ�û�к��ӽڵ�\n");
+        printf("该节点没有孩子节点\n");
     }
     if(p->lchild != NULL) {
         int maxData = getMaxNode(p->lchild);
-        printf("���������ڵ�Ϊ��%d",maxData);
+        printf("左子树最大节点为：%d",maxData);
     }
     if(p->rchild != NULL) {
         int minData = getMinNode(p->rchild);
-        printf("��������С�ڵ�Ϊ��%d",minData);
+        printf("右子树最小节点为：%d",minData);
     }
 
 }
 
 
-void Delete1(BSTNode *p, BSTNode *r) { //2&
+void Delete1(BSTNode *p, BSTNode *&r) { //2&
     BSTNode *q;
     if(r->rchild != NULL) {
         Delete1(p,r->rchild);
     }
 }
 
-void Delete(BSTNode *p) {  //�Ӷ�����������ɾ��p�ڵ� 1&
+void Delete(BSTNode *&p) {  //从二叉排序树中删除p节点 1&
     BSTNode *q;
-    if(p->rchild == NULL) {  //p�ڵ�û��������
+    if(p->rchild == NULL) {  //p节点没有右子树
         q = p;
-        p = p->lchild;  //�����������ڵ���ڱ�ɾ���ڵ�
+        p = p->lchild;  //将其左子树节点放在被删除节点
         free(q);
-    }else if(p->lchild == NULL) {   //p�ڵ�û��������
+    }else if(p->lchild == NULL) {   //p节点没有左子树
         q = p;
-        p = p->rchild;  //�������������ڱ�ɾ���ڵ�
+        p = p->rchild;  //将其右子树放在被删除节点
         free(q);
     } else {
-        Delete1(p,p->lchild);  //p�ڵ��������������������
+        Delete1(p,p->lchild);  //p节点既有左子树又有右子树
     }
 
 }
 
 /**
- * ɾ���ؼ���Ϊe�Ľڵ�
+ * 删除关键字为e的节点
  * @param bt
  * @param e
  * @return
@@ -198,19 +198,19 @@ int main()
     int a[] = {5,2,1,6,7,4,8,3,9};
     int length = sizeof(a)/ sizeof(int);
     p = CreateBSTNode(a,length);
-    printf("�����������������Ϊ��");
+    printf("中序遍历二叉排序树为：");
     MidOutput(p);
     printf("\n");
 
     BSTNode *bt;
     bt = SearchBST(p,6);
     if(bt != NULL) {
-        printf("�ýڵ�ֵΪ��%d\n",bt->key);
+        printf("该节点值为：%d\n",bt->key);
     }else {
-        printf("�����ڸýڵ�\n");
+        printf("不存在该节点\n");
     }
 
-    //��ȡĳ�ڵ㣬�����������ֵ������������Сֵ
+    //获取某节点，左子树的最大值，右子树的最小值
     getMaxAndMinNode(p);
 
 
