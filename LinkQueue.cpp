@@ -73,6 +73,28 @@ void destoryQueue(LiQueue *&q) {
     printf("队列释放完毕!\n");
 }
 
+//求解报数问题
+void number(LiQueue *&q) {
+    printf("出队列为：");
+    QNode *t,*s;
+    while(q->reals != NULL) {
+        t = q->fronts;
+        printf("%d ",t->data);
+        q->fronts = t->next;
+        free(t);
+        t = q->fronts;
+        if(q->reals != NULL) {
+            s =(QNode *) malloc(sizeof(QNode));
+            s->data = t->data;
+            s->next = NULL;
+            q->reals->next = s;
+            q->reals = s;
+            q->fronts = t->next;
+            free(t);
+        }
+    }
+}
+
 //链队列
 int main()
 {
@@ -81,11 +103,15 @@ int main()
     for(int i=1;i<=8;i++) {
         enQueue(q,i);
     }
-    deQueue(q);
-    deQueue(q);
 
-    destoryQueue(q);
-    deQueue(q);
+    number(q);
+    //for(int i=1;i<=8;i++) {
+    //     deQueue(q);
+    //}
+    //deQueue(q);
+
+    //destoryQueue(q);
+    //deQueue(q);
     return 0;
 }
 
